@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+.pytest_cache/
+
+# 가상환경
+.venv/
+venv/
+.env
+env/
+
+# 학습 산출물 (용량 큼 - 절대 커밋 금지)
+**/outputs/
+**/data/
+**/checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+
+# Logs
+runs/
+wandb/
+*.log
+lightning_logs/
+
+# IDE
+.vscode/
+.cursor/
+.idea/
+
+# Claude Code 개인 메모 + 메타데이터
+CLAUDE.local.md
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 회사·미공개 정보 보호
+*_internal.md
+*_private.md
+notes_company/
+secrets/
