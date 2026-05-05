@@ -70,11 +70,23 @@ rather than writing a backbone from scratch; use Albumentations rather than
 - Primary dev machine: RTX 5090 (Blackwell, sm_120) on Ubuntu, in a corporate
   network environment. Requires PyTorch nightly with CUDA 12.8+.
 - Portable: RTX 4090 laptop, used on personal network.
-- The conda environment `pytorch_1` is the working env on the 5090.
+
+## Environment
+
+- Conda environment for this learning repo: **`rtai-learning`** (Python 3.11).
+- Activated with: `conda activate rtai-learning`.
+- PyTorch nightly is pinned to `2.12.0.dev+cu128`.
+- A separate environment `pytorch_1` exists for legacy/other work; do NOT
+  install rtai-learning dependencies into it.
+
+## Known dependency notes
+
+- `pandas` is pinned to `<3.0` because `pandas 3.0.x` causes a NumPy 2.4 ABI
+  segfault during install. See `week01_first_training/requirements.txt`.
 
 When suggesting installs or commands, assume the 5090 + nightly PyTorch
-context unless the user says otherwise. If a fix requires a stable PyTorch
-release, flag it explicitly.
+context with the `rtai-learning` conda env unless the user says otherwise.
+If a fix requires a stable PyTorch release, flag it explicitly.
 
 ## Code conventions
 

@@ -1,7 +1,16 @@
 # ============================================================
 # Week 01 - First Training Pipeline
 # ============================================================
-# Note: PyTorch는 별도로 nightly 설치됨 (CUDA 12.8 / 5090용).
+# Conda environment: `rtai-learning` (Python 3.11)
+# 
+# 셋업 명령:
+#   conda create -n rtai-learning python=3.11 -y
+#   conda activate rtai-learning
+#   pip install --pre torch torchvision \
+#       --index-url https://download.pytorch.org/whl/nightly/cu128
+#   pip install -r requirements.txt
+# 
+# Note: PyTorch는 별도로 nightly 설치됨 (CUDA 12.8 / 5090 sm_120용).
 # 여기 명시하면 잘못된 버전으로 덮어쓸 위험이 있어 의도적으로 제외.
 
 # Models & Data
