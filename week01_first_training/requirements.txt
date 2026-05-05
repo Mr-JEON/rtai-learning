@@ -1,0 +1,27 @@
+# ============================================================
+# Week 01 - First Training Pipeline
+# ============================================================
+# Note: PyTorch는 별도로 nightly 설치됨 (CUDA 12.8 / 5090용).
+# 여기 명시하면 잘못된 버전으로 덮어쓸 위험이 있어 의도적으로 제외.
+
+# Models & Data
+timm>=1.0.11             # Apache 2.0 - 백본 라이브러리
+medmnist>=3.0.2          # Apache 2.0 - 의료영상 데이터셋
+albumentations>=1.4.0    # MIT - augmentation 파이프라인
+
+# Training utilities
+tensorboard>=2.16        # Apache 2.0 - 학습 시각화
+tqdm>=4.66               # MPL-2.0 - 진행 바
+pyyaml>=6.0              # MIT - config 로딩
+numpy>=1.26,<2.5         # BSD
+pillow>=10.0             # HPND (MIT-like)
+scikit-learn>=1.4        # BSD - metrics
+
+# Pandas: 3.0.x는 NumPy 2.4와 ABI 충돌(segfault) 발생.
+# 2026년 5월 기준 안정 조합은 2.x.
+pandas>=2.2,<3.0         # BSD
+
+# EDA & Visualization
+matplotlib>=3.8          # PSF (BSD-like)
+seaborn>=0.13            # BSD
+jupyter                  # BSD
