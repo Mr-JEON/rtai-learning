@@ -2,33 +2,44 @@
 # Week 01 - First Training Pipeline
 # ============================================================
 # Conda environment: `rtai-learning` (Python 3.11)
-# 
+#
 # 셋업 명령:
 #   conda create -n rtai-learning python=3.11 -y
 #   conda activate rtai-learning
 #   pip install --pre torch torchvision \
 #       --index-url https://download.pytorch.org/whl/nightly/cu128
 #   pip install -r requirements.txt
-# 
-# Note: PyTorch는 별도로 nightly 설치됨 (CUDA 12.8 / 5090 sm_120용).
-# 여기 명시하면 잘못된 버전으로 덮어쓸 위험이 있어 의도적으로 제외.
+#
+# Note: PyTorch는 nightly (CUDA 12.8 / 5090 sm_120용).
+# 핵심 라이브러리는 검증된 보수적 버전으로 명시.
 
 # Models & Data
-timm>=1.0.11             # Apache 2.0 - 백본 라이브러리
-medmnist>=3.0.2          # Apache 2.0 - 의료영상 데이터셋
-albumentations>=1.4.0    # MIT - augmentation 파이프라인
+timm>=1.0.11             # Apache 2.0
+medmnist>=3.0.2          # Apache 2.0
+
+# Albumentations: 2.x는 OpenCV 4.13+와의 native 충돌 가능성 있음.
+albumentations>=1.4,<2.0  # MIT
 
 # Training utilities
-tensorboard>=2.16        # Apache 2.0 - 학습 시각화
-tqdm>=4.66               # MPL-2.0 - 진행 바
-pyyaml>=6.0              # MIT - config 로딩
-numpy>=1.26,<2.5         # BSD
-pillow>=10.0             # HPND (MIT-like)
-scikit-learn>=1.4        # BSD - metrics
+tensorboard>=2.16        # Apache 2.0
+tqdm>=4.66               # MPL-2.0
+pyyaml>=6.0              # MIT
 
-# Pandas: 3.0.x는 NumPy 2.4와 ABI 충돌(segfault) 발생.
-# 2026년 5월 기준 안정 조합은 2.x.
+# numpy 2.x는 PyTorch nightly에서 ABI 충돌 빈발. 1.x 사용.
+numpy>=1.26,<2.0         # BSD
+
+# pillow 12.x는 albumentations 1.x와 충돌 가능. 10.x 사용.
+pillow>=10.0,<11.0       # HPND
+
+# scikit-learn 1.8.0+ scipy 1.17.x는 NumPy ABI segfault 발생.
+scikit-learn>=1.4,<1.6   # BSD
+scipy>=1.13,<1.16        # BSD
+
+# pandas 3.x는 NumPy 2.4 ABI 충돌. 2.x 사용.
 pandas>=2.2,<3.0         # BSD
+
+# OpenCV 4.13.x는 albumentations 2.0과 함께 stack smashing 발생.
+opencv-python-headless>=4.8,<4.11  # Apache 2.0
 
 # EDA & Visualization
 matplotlib>=3.8          # PSF (BSD-like)

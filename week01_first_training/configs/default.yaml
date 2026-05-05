@@ -1,0 +1,38 @@
+# ============================================================
+# Week 01 - First Training Pipeline
+# ============================================================
+# 모든 하이퍼파라미터는 여기서 관리. 코드는 건드리지 않음.
+
+experiment:
+  # name: "week01_pneumonia_resnet50"   # 실험명. outputs/{name}/ 폴더 생성됨
+  name: "week01_pneumonia_resnet50_v2"  # ← _v2 추가
+  seed: 42                             # 재현성을 위한 seed
+  output_dir: "outputs"                # 학습 산출물 저장 위치 (gitignored)
+
+data:
+  dataset: "pneumoniamnist"            # 또는 "chestmnist"
+  size: 64                             # MedMNIST는 28/64/128/224 제공. 64로 시작
+  batch_size: 64                       # 5090이면 더 키울 수 있지만 일단 안전하게
+  num_workers: 4                       # DataLoader 병렬 워커 수
+  augmentation: true                   # train에만 적용됨
+
+model:
+  name: "resnet50"                     # timm 모델명. 'efficientnet_b0', 'vit_small_patch16_224' 등 변경 가능
+  pretrained: true                     # ImageNet pretrained 사용
+  in_chans: 1                          # 그레이스케일 (RT 필름과 동일!)
+  drop_rate: 0.1                       # Dropout (regularization)
+
+train:
+  epochs: 10
+  lr: 1.0e-3                           # AdamW의 일반적 시작점
+  weight_decay: 1.0e-4                 # AdamW의 L2 정규화 (decoupled)
+  optimizer: "adamw"                   # 1주차는 AdamW 고정
+  scheduler: "cosine"                  # cosine annealing
+  warmup_epochs: 1                     # 첫 epoch에 lr을 0->target으로 점진적 증가
+  use_amp: true                        # Mixed Precision (float16). 메모리·속도 ↑
+  grad_clip: 1.0                       # gradient norm clipping. 학습 안정화
+
+logging:
+  log_every: 20                        # iteration마다 TensorBoard에 기록
+  save_best: true                      # best 모델 checkpoint 저장
+  metric: "auc"                        # best 기준 메트릭 ("auc" / "acc")
