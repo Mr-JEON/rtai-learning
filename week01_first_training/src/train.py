@@ -39,25 +39,36 @@ def sanity_overfit(model, loader, criterion, device, task, steps=50):
     
     1주차의 가장 중요한 디버깅 패턴.
     """
-    model.train()
+    model.train()  # 모델을 학습 모드로 전환 (dropout/batchnorm 등 학습 동작 활성화)
+    
+    # 전체 loader에서 첫 batch만 추출 — 1-batch overfit에 사용
     imgs, labels = next(iter(loader))
-    imgs = imgs.to(device)
-    labels = labels.to(device)
+    imgs = imgs.to(device)      # 이미지 텐서를 GPU로 이동
+    labels = labels.to(device)  # 라벨 텐서도 GPU로 이동
     
+    # 간단한 AdamW 옵티마이저 생성 (sanity 체크용, learning rate 고정)
     opt = torch.optim.AdamW(model.parameters(), lr=1e-3)
-    losses = []
+    losses = []  # epoch마다 loss 기록 리스트
+
     for i in range(steps):
-        opt.zero_grad()
-        logits = model(imgs)
-        loss = criterion(logits, labels)
-        loss.backward()
-        opt.step()
-        losses.append(loss.item())
-    
+        opt.zero_grad()  # 이전 gradient를 0으로 초기화 (필수)
+        
+        logits = model(imgs)  # 모델 forward pass (output shape: [batch, ...])
+        loss = criterion(logits, labels)  # 손실 함수 계산 (예: CrossEntropy 등)
+        
+        loss.backward()  # gradient 계산 (역전파)
+        opt.step()       # 가중치 업데이트
+        
+        losses.append(loss.item())  # 현재 step의 손실 값을 리스트에 저장
+
+    # 초기 loss와 마지막 loss 비교 출력
     print(f"  loss[0]={losses[0]:.4f} → loss[-1]={losses[-1]:.4f}")
+    
+    # loss가 충분히 감소(최소 절반 이하)하지 않으면 데이터/모델/loss에 문제 있음
     if losses[-1] >= losses[0] * 0.5:
         print("  ⚠️  loss가 충분히 떨어지지 않음 — 데이터/모델/loss 점검 필요")
         return False
+
     print("  ✅ Sanity OK (1-batch에 정상 overfit)")
     return True
 
